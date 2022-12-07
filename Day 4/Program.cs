@@ -4,7 +4,6 @@ class Program
     static void Main(string[] args)
     {
         List<string> inputLines = File.ReadLines("input.txt").ToList();
-        string s;
         int count=0;
         foreach(var pair in inputLines){
             Console.WriteLine(pair);
