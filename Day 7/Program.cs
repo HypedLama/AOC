@@ -7,49 +7,51 @@ class Program
 
         string[] input = File.ReadLines("example.txt").ToArray();
         Dictionary<string, int> directorysize = new();
-        string Path ="";
-        foreach (var item in input[1..])
+        string Path = "";
+        foreach (var item in input)
         {
 
             if (item.Contains("$ cd "))
             {
-				string folder = item.Split(" ")[2];
-
-				if(!item.Contains("$ cd ..")){
-                Path += "-" + folder;
-				Console.WriteLine(Path.LastIndexOf(folder));
-				}else{
-					var SubPath = Path.Split("-");
-					Path = Path.Remove(Path.LastIndexOf("-" + SubPath.Last()));
-				}
+                string folder = item.Split(" ")[2];
+                if (!item.Contains("$ cd .."))
+                {
+                    Path += "-" + folder;
+                }
+                else
+                {
+                    var SubPath = Path.Split("-");
+                    Path = Path.Remove(Path.LastIndexOf("-" + SubPath.Last()));
+                }
             }
-            else if (StartsNum(item))
+            else if (char.IsDigit(item[0]))
             {
                 int size = int.Parse(item.Split(" ")[0]);
-				foreach (var directory in Path.Split("-"))
+                var SubPath = Path;
+                foreach (var directory in Path.Split("-"))
                 {
-					if(directory != ""){
-                    var SubPath = Path.Remove(Path.LastIndexOf(directory)+1);
-					Console.WriteLine(SubPath);
-                    if (!directorysize.ContainsKey(SubPath))
+                    if (directory != "")
                     {
-                        directorysize.Add(SubPath, 0);
-                    }
-                    directorysize[SubPath] += size;
+                        if (!directorysize.ContainsKey(SubPath))
+                        {
+                            directorysize.Add(SubPath, 0);
+                        }
+                        directorysize[SubPath] += size;
+           
+                        SubPath = Path.Remove(Path.LastIndexOf("-" + SubPath.Split("-").Last()));
                     }
                 }
             }
         }
-		int sum=0;
-		foreach(var item in directorysize){
-			if(item.Value <= 100000){
-				sum += item.Value;
-			}
-		}
-		Console.WriteLine(sum);
-    }
-	static bool StartsNum(string input)
+        int sum = 0;
+        foreach (var item in directorysize)
         {
-            return char.IsDigit(input[0]);
+            Console.WriteLine(item);
+            if (item.Value <= 100000)
+            {
+                sum += item.Value;
+            }
         }
+        Console.WriteLine(sum);
+    }
 }
