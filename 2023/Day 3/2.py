@@ -33,7 +33,6 @@ with open("input.txt") as file:
                 if number != "" and checknearby(number,lines,l,i)[0] !=-1:
                     cogs.append(checknearby(number,lines,l,i))
                 number = ""
-print(cogs)
 cogs.sort()
 cogs2 =[]
 for cog in cogs:
@@ -44,5 +43,4 @@ while i < len(cogs):
     if(count==2):
         sum += int(cogs[i][1])*int(cogs[i+1][1])
     i = i +count
-print(cogs)
 print(sum)
